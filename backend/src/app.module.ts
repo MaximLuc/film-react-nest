@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ServeStaticModule } from "@nestjs/serve-static";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import * as path from "node:path";
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as path from 'node:path';
 
-import { configProvider } from "./app.config.provider";
+import { configProvider } from './app.config.provider';
 import { FilmsController } from './films/films.controller';
 import { FilmsService } from './films/films.service';
 import { OrderController } from './order/order.controller';
@@ -21,8 +21,8 @@ import { FilmsRepository } from './repository/films.repository';
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        const uri = config.get<string>('MONGO_URI');
-        if (!uri) throw new Error('MONGO_URI is not set');
+        const uri = config.get<string>('DATABASE_URL');
+        if (!uri) throw new Error('DATABASE_URL is not set');
         return { uri };
       },
     }),
@@ -30,10 +30,10 @@ import { FilmsRepository } from './repository/films.repository';
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '..', 'public'),
       serveRoot: '/public',
-      exclude: ['/api/afisha*']
-    })
+      exclude: ['/api/afisha*'],
+    }),
   ],
   controllers: [FilmsController, OrderController],
   providers: [configProvider, FilmsService, OrderService, FilmsRepository],
 })
-export class AppModule { }
+export class AppModule {}

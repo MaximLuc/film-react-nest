@@ -1,36 +1,35 @@
+import { IsArray, IsNumber, IsString, IsUUID, Max, Min } from 'class-validator';
 
-import {IsArray, IsNumber, IsString, IsUUID,Max,Min} from 'class-validator';
+export class MovieDto {
+  @IsUUID()
+  id: string;
 
-export class MovieDto{
-    @IsUUID()
-    id:string;
+  @IsNumber()
+  @Min(0)
+  @Max(10)
+  rating: number;
 
-    @IsNumber()
-    @Min(0)
-    @Max(10)
-    rating:number;
+  @IsString()
+  director: string;
 
-    @IsString()
-    director:string;
+  @IsArray()
+  @IsString({ each: true })
+  tags: string[];
 
-    @IsArray()
-    @IsString({each:true})
-    tags:string[];
+  @IsString()
+  title: string;
 
-    @IsString()
-    title:string;
+  @IsString()
+  about: string;
 
-    @IsString()
-    about:string;
+  @IsString()
+  description: string;
 
-    @IsString()
-    description:string;
+  @IsString()
+  image: string;
 
-    @IsString()
-    image:string;
-
-    @IsString()
-    cover:string;
+  @IsString()
+  cover: string;
 }
 
 export class SessionDto {

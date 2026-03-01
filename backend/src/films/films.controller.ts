@@ -2,15 +2,15 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { FilmsService } from './films.service';
 @Controller('films')
 export class FilmsController {
-    constructor(private readonly filmsService:FilmsService){}
-        
-    @Get()
-    getFilms(){
-        return this.filmsService.getFilms();
-    }
+  constructor(private readonly filmsService: FilmsService) {}
 
-    @Get(':id/schedule')
-    getSession(@Param('id') id:string){
-        return this.filmsService.getFilmSession(id);
-    }
+  @Get()
+  getFilms() {
+    return this.filmsService.getFilms();
+  }
+
+  @Get(':id/schedule')
+  getSession(@Param('id') id: string) {
+    return this.filmsService.getFilmSession(id);
+  }
 }

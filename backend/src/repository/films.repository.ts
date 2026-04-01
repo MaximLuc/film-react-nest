@@ -1,48 +1,38 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Film, FilmDocument } from '../films/films.schema';
+export interface FilmRecord {
+  id: string;
+  rating: number;
+  director: string;
+  tags: string[];
+  image: string;
+  cover: string;
+  title: string;
+  about: string;
+  description: string;
+}
 
-@Injectable()
-export class FilmsRepository {
-  constructor(
-    @InjectModel(Film.name) private readonly filmModel: Model<FilmDocument>,
-  ) {}
+export interface ScheduleRecord {
+  id: string;
+  daytime: string;
+  hall: number;
+  rows: number;
+  seats: number;
+  price: number;
+  taken: string[];
+}
 
-  async findAllWithoutSchedules() {
-    return this.filmModel
-      .find({}, { schedule: 0, _id: 0, __v: 0 })
-      .lean()
-      .exec();
-  }
+export abstract class FilmsRepository {
+  abstract findAllWithoutSchedules(): Promise<FilmRecord[]>;
 
-  async findSchedulesByFilmId(filmId: string) {
-    const doc = await this.filmModel
-      .findOne({ id: filmId }, { schedule: 1, _id: 0 })
-      .lean()
-      .exec();
-    if (!doc) {
-      throw new NotFoundException('Film not found');
-    }
-    return (doc as Film).schedule ?? [];
-  }
+  abstract findSchedulesByFilmId(filmId: string): Promise<ScheduleRecord[]>;
 
-  async reservePlace(filmId: string, scheduleId: string, place: string) {
-    const res = await this.filmModel.updateOne(
-      { id: filmId, 'schedule.id': scheduleId },
-      { $addToSet: { 'schedule.$.taken': place } },
-    );
-    if (res.matchedCount === 0) throw new NotFoundException('Sit not found');
-  }
+  abstract reservePlace(
+    filmId: string,
+    scheduleId: string,
+    place: string,
+  ): Promise<void>;
 
-  async getSitsInfo(filmId: string, scheduleId: string) {
-    const doc = await this.filmModel
-      .findOne({ id: filmId }, { schedule: 1, _id: 0 })
-      .lean()
-      .exec();
-    if (!doc) throw new NotFoundException('not found film');
-    const place = (doc as Film).schedule.find((s: any) => s.id === scheduleId);
-    if (!place) throw new NotFoundException('Not Found Place');
-    return place;
-  }
+  abstract getSitsInfo(
+    filmId: string,
+    scheduleId: string,
+  ): Promise<ScheduleRecord>;
 }

@@ -1,5 +1,5 @@
 # FILM!
-
+ссылка http://film-nest-react.nomorepartiessite.ru/
 ## Установка
 
 ### MongoDB
@@ -32,5 +32,5 @@ MongoDB должна быть установлена и запущена.
 Для проверки отправьте тестовый запрос с помощью Postman или `curl`.
 
 
-
+//film-nest-react
 

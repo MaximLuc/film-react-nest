@@ -1,5 +1,5 @@
 export type DatabaseDriver = 'mongodb' | 'postgres';
-
+export type LoggerType = 'dev' | 'json' | 'tskv';
 const DEFAULT_PORT = 3000;
 const DEFAULT_POSTGRES_PORT = 5432;
 
@@ -10,6 +10,13 @@ function readNumber(value: string | undefined, fallback: number): number {
 
 function readDatabaseDriver(value: string | undefined): DatabaseDriver {
   return value === 'postgres' ? 'postgres' : 'mongodb';
+}
+
+function readLoggerType(value: string | undefined): LoggerType {
+  if (value === 'json' || value === 'tskv') {
+    return value;
+  }
+  return 'dev';
 }
 
 export interface AppConfig {
@@ -23,6 +30,9 @@ export interface AppConfig {
     username: string;
     password: string;
   };
+  logger: {
+    type: LoggerType;
+  };
 }
 
 export const configuration = (): AppConfig => ({
@@ -35,6 +45,9 @@ export const configuration = (): AppConfig => ({
     name: process.env.DATABASE_NAME ?? '',
     username: process.env.DATABASE_USERNAME ?? '',
     password: process.env.DATABASE_PASSWORD ?? '',
+  },
+  logger: {
+    type: readLoggerType(process.env.LOGGER_TYPE),
   },
 });
 

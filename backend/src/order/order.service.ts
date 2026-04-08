@@ -1,5 +1,5 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { FilmsRepository } from 'src/repository/films.repository';
+import { FilmsRepository } from '../repository/films.repository';
 import { OrderDto, OrderResultDto } from './dto/order.dto';
 
 type ApiListResponse<T> = { total: number; items: T[] };

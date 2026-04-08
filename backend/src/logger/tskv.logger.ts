@@ -1,15 +1,15 @@
 import { Injectable, LoggerService } from '@nestjs/common';
 
 @Injectable()
-export class TskvLogger implements LoggerService {
+export class TskvLogger<T = unknown> implements LoggerService {
   private normalizeValue(value: string): string {
     return value.replace(/\t/g, ' ').replace(/\n/g, ' ');
   }
 
   private formatMessage(
     level: string,
-    message: any,
-    ...optionalParams: any[]
+    message: T,
+    ...optionalParams: T[]
   ): string {
     const parts = [`level=${level}`];
     switch (typeof message) {
@@ -31,23 +31,23 @@ export class TskvLogger implements LoggerService {
     return parts.join('\t');
   }
 
-  log(message: any, ...optionalParams: any[]): void {
+  log(message: T, ...optionalParams: T[]): void {
     console.log(this.formatMessage('log', message, ...optionalParams));
   }
 
-  error(message: any, ...optionalParams: any[]): void {
+  error(message: T, ...optionalParams: T[]): void {
     console.error(this.formatMessage('error', message, ...optionalParams));
   }
 
-  warn(message: any, ...optionalParams: any[]): void {
+  warn(message: T, ...optionalParams: T[]): void {
     console.warn(this.formatMessage('warn', message, ...optionalParams));
   }
 
-  debug?(message: any, ...optionalParams: any[]): void {
+  debug?(message: T, ...optionalParams: T[]): void {
     console.debug(this.formatMessage('debug', message, ...optionalParams));
   }
 
-  verbose?(message: any, ...optionalParams: any[]): void {
+  verbose?(message: T, ...optionalParams: T[]): void {
     console.log(this.formatMessage('verbose', message, ...optionalParams));
   }
 }

@@ -1,7 +1,7 @@
 import { JsonLogger } from './json.logger';
 
 describe('JsonLogger', () => {
-  let logger: JsonLogger;
+  let logger: JsonLogger<unknown>;
 
   beforeEach(() => {
     logger = new JsonLogger();

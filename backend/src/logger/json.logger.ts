@@ -1,11 +1,11 @@
 import { Injectable, LoggerService } from '@nestjs/common';
 
 @Injectable()
-export class JsonLogger implements LoggerService {
+export class JsonLogger<T = unknown> implements LoggerService {
   private formatMessage(
     level: string,
-    message: any,
-    ...optionalParams: any[]
+    message: T,
+    ...optionalParams: T[]
   ): string {
     return JSON.stringify({
       level,
@@ -15,23 +15,23 @@ export class JsonLogger implements LoggerService {
     });
   }
 
-  log(message: any, ...optionalParams: any[]): void {
+  log(message: T, ...optionalParams: T[]): void {
     console.log(this.formatMessage('log', message, ...optionalParams));
   }
 
-  error(message: any, ...optionalParams: any[]): void {
+  error(message: T, ...optionalParams: T[]): void {
     console.error(this.formatMessage('error', message, ...optionalParams));
   }
 
-  warn(message: any, ...optionalParams: any[]): void {
+  warn(message: T, ...optionalParams: T[]): void {
     console.warn(this.formatMessage('warn', message, ...optionalParams));
   }
 
-  debug?(message: any, ...optionalParams: any[]): void {
+  debug?(message: T, ...optionalParams: T[]): void {
     console.debug(this.formatMessage('debug', message, ...optionalParams));
   }
 
-  verbose?(message: any, ...optionalParams: any[]): void {
+  verbose?(message: T, ...optionalParams: T[]): void {
     console.log(this.formatMessage('verbose', message, ...optionalParams));
   }
 }

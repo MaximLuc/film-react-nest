@@ -2,6 +2,7 @@ services:
   postgres:
     image: postgres:16
     container_name: film-postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -12,6 +13,7 @@ services:
   backend:
     image: ghcr.io/maximluc/film-backend:latest
     container_name: film-backend
+    restart: unless-stopped
     depends_on:
       - postgres
     environment:
@@ -26,6 +28,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: film-pgadmin
+    restart: unless-stopped
     depends_on:
       - postgres
     environment:
@@ -37,6 +40,7 @@ services:
   frontend:
     image: ghcr.io/maximluc/film-frontend:latest
     container_name: film-frontend
+    restart: "no"
     volumes:
       - frontend_dist:/frontend-dist
     command: sh -c "cp -r /app/dist/* /frontend-dist/"
@@ -44,6 +48,7 @@ services:
   nginx:
     image: ghcr.io/maximluc/film-nginx:latest
     container_name: film-nginx
+    restart: unless-stopped
     depends_on:
       - backend
       - frontend

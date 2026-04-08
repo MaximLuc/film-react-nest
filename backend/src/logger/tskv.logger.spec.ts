@@ -1,7 +1,7 @@
 import { TskvLogger } from './tskv.logger';
 
 describe('TskvLogger', () => {
-  let logger: TskvLogger;
+  let logger: TskvLogger<unknown>;
 
   beforeEach(() => {
     logger = new TskvLogger();
